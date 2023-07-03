@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,8 @@ public class ReadLandingInstructionsServiceTest {
     }};
 
     @Test
-    public void read_directions_valid() {
-        List<String> directions = readLandingDirectionsService.readInstructionsFrom((fileFromResourcePath("valid-instructions.txt")));
+    public void read_instructions_valid() throws ReadLandingInstructionsException, URISyntaxException {
+        List<String> directions = readLandingDirectionsService.readInstructionsFrom((fileFromResourcePath("valid-instructions.txt")).getAbsolutePath());
         Assertions.assertNotNull(directions);
         assertTrue(directions.contains("5 5"));
         assertTrue(directions.contains("1 2 N"));
@@ -43,18 +44,29 @@ public class ReadLandingInstructionsServiceTest {
     }
 
     @Test
-    public void read_directions_expect_exception() {
+    public void read_instructions_expect_exception() {
         Exception exception = assertThrows(ReadLandingInstructionsException.class, () ->
-                readLandingDirectionsService.readInstructionsFrom(fileFromResourcePath("invalid-path"))
+                readLandingDirectionsService.readInstructionsFrom("invalid-path")
         );
 
-        String expectedMessage = "";
+        String expectedMessage = "Erreur occurred when reading instruction from file";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
 
     @Test
-    public void extract_plateau_coordinates_valid() {
+    public void read_instructions_expect_exception_invalid_length() {
+        Exception exception = assertThrows(ReadLandingInstructionsException.class, () ->
+                readLandingDirectionsService.readInstructionsFrom((fileFromResourcePath("invalid-length-instructions.txt")).getAbsolutePath())
+        );
+
+        String expectedMessage = "Erreur occurred when reading inputs, instructions maybe incomplete";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
+    public void extract_plateau_coordinates_valid() throws ReadLandingInstructionsException {
         Pair<Integer, Integer> plateauCoordinates = readLandingDirectionsService.extractPlateauCoordinates(directionsMock);
         assertEquals(5, plateauCoordinates.getLeft().intValue());
         assertEquals(7, plateauCoordinates.getRight().intValue());
@@ -72,7 +84,7 @@ public class ReadLandingInstructionsServiceTest {
     }
 
     @Test
-    public void extract_rovers_positions_valid() {
+    public void extract_rovers_positions_valid() throws ReadLandingInstructionsException {
         List<Triple<Integer, Integer, String>> positions = readLandingDirectionsService.extractRoversPosition(directionsMock);
         assertEquals(2, positions.size());
         assertEquals(1, positions.get(0).getLeft().intValue());
@@ -89,13 +101,13 @@ public class ReadLandingInstructionsServiceTest {
                 readLandingDirectionsService.extractRoversPosition(invalidDirectionsMock)
         );
 
-        String expectedMessage = "Erreur occurred when reading rovers positions";
+        String expectedMessage = "Erreur occurred when reading rover positions";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
 
     @Test
-    public void extractRoversInstructionsTest() {
+    public void extractRoversInstructionsTest() throws ReadLandingInstructionsException {
         List<String> instructions = readLandingDirectionsService.extractRoversInstructions(directionsMock);
         assertEquals(2, instructions.size());
         assertEquals("LMLMLMLMM", instructions.get(0));
