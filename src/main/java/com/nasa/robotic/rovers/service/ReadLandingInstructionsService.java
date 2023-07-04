@@ -42,14 +42,14 @@ public class ReadLandingInstructionsService implements IReadLandingInstructionsS
     }
 
     @Override
-    public List<Triple<Integer, Integer, String>> extractRoversPosition(List<String> inputs) throws ReadLandingInstructionsException {
+    public List<Triple<Integer, Integer, Character>> extractRoversPosition(List<String> inputs) throws ReadLandingInstructionsException {
         if (inputs != null && inputs.size() > 1) {
-            List<Triple<Integer, Integer, String>> roversPosition = new ArrayList<>(inputs.size() / 2);
+            List<Triple<Integer, Integer, Character>> roversPosition = new ArrayList<>(inputs.size() / 2);
             for (int i = 1; i < inputs.size(); i += 2) {
                 String roverPosition = inputs.get(i);
                 InstructionsValidator.validateRoverPosition(roverPosition);
                 String[] xyP = roverPosition.split(" ");
-                roversPosition.add(Triple.of(Integer.parseInt(xyP[0]), Integer.parseInt(xyP[1]), xyP[2]));
+                roversPosition.add(Triple.of(Integer.parseInt(xyP[0]), Integer.parseInt(xyP[1]), xyP[2].charAt(0)));
             }
 
             return roversPosition;

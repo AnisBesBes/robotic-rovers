@@ -6,12 +6,11 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.nasa.robotic.rovers.service.TestUtils.fileFromResourcePath;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ReadLandingInstructionsServiceTest {
@@ -35,7 +34,7 @@ public class ReadLandingInstructionsServiceTest {
     }};
 
     @Test
-    public void read_instructions_valid() throws ReadLandingInstructionsException, URISyntaxException {
+    public void read_instructions_valid() throws ReadLandingInstructionsException {
         List<String> directions = readLandingDirectionsService.readInstructionsFrom((fileFromResourcePath("valid-instructions.txt")).getAbsolutePath());
         Assertions.assertNotNull(directions);
         assertTrue(directions.contains("5 5"));
@@ -85,14 +84,14 @@ public class ReadLandingInstructionsServiceTest {
 
     @Test
     public void extract_rovers_positions_valid() throws ReadLandingInstructionsException {
-        List<Triple<Integer, Integer, String>> positions = readLandingDirectionsService.extractRoversPosition(directionsMock);
+        List<Triple<Integer, Integer, Character>> positions = readLandingDirectionsService.extractRoversPosition(directionsMock);
         assertEquals(2, positions.size());
         assertEquals(1, positions.get(0).getLeft().intValue());
         assertEquals(2, positions.get(0).getMiddle().intValue());
-        assertEquals("N", positions.get(0).getRight());
+        assertEquals('N', positions.get(0).getRight());
         assertEquals(3, positions.get(1).getLeft().intValue());
         assertEquals(3, positions.get(1).getMiddle().intValue());
-        assertEquals("E", positions.get(1).getRight());
+        assertEquals('E', positions.get(1).getRight());
     }
 
     @Test
@@ -123,14 +122,5 @@ public class ReadLandingInstructionsServiceTest {
         String expectedMessage = "Erreur occurred when reading rovers instructions";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
-    }
-
-    private static File fileFromResourcePath(final String path) {
-        try {
-            URL url = ReadLandingInstructionsServiceTest.class.getClassLoader().getResource(path);
-            return new File(url.toURI());
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
     }
 }

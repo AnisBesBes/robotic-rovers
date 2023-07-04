@@ -13,7 +13,7 @@ public interface IReadLandingInstructionsService {
 
     Pair<Integer, Integer> extractPlateauCoordinates(final List<String> directions) throws ReadLandingInstructionsException;
 
-    List<Triple<Integer, Integer, String>> extractRoversPosition(final List<String> directions) throws ReadLandingInstructionsException;
+    List<Triple<Integer, Integer, Character>> extractRoversPosition(final List<String> directions) throws ReadLandingInstructionsException;
 
     List<String> extractRoversInstructions(final List<String> directions) throws ReadLandingInstructionsException;
 }

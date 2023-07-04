@@ -1,12 +1,16 @@
 package com.nasa.robotic.rovers.model;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 public class Rover {
 
     private int x;
     private int y;
-    private String cardinal;
+    private char cardinal;
+
+    public Rover(Integer x, Integer y, char cardinal) {
+        this.x = x;
+        this.y = y;
+        this.cardinal = cardinal;
+    }
 
     public void setX(int x) {
         this.x = x;
@@ -16,24 +20,24 @@ public class Rover {
         this.y = y;
     }
 
-    public String getCardinal() {
+    public char getCardinal() {
         return cardinal;
     }
 
-    public void setCardinal(String cardinal) {
+    public void setCardinal(char cardinal) {
         this.cardinal = cardinal;
     }
 
     public int getX() {
-        return 0;
+        return x;
     }
 
     public int getY() {
-        return 0;
+        return y;
     }
 
     @Override
     public String toString() {
-        throw new NotImplementedException();
+        return String.join(" ", String.valueOf(x), String.valueOf(y), String.valueOf(cardinal));
     }
 }

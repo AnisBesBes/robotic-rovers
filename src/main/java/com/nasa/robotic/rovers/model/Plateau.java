@@ -7,6 +7,11 @@ public class Plateau {
     private int maxY;
     private final int MIN_Y = 0;
 
+    public Plateau(Integer maxX, Integer maxY) {
+        this.maxX = maxX;
+        this.maxY = maxY;
+    }
+
     public int getMaxX() {
         return maxX;
     }
