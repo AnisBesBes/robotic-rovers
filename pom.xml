@@ -7,6 +7,7 @@
     <groupId>com.nasa</groupId>
     <artifactId>robotic-rovers</artifactId>
     <version>1.0</version>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -20,6 +21,36 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.nasa.robotic.rovers.Main</mainClass>
+                        </manifest>
+                    </archive>
+                    <finalName>rover</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
